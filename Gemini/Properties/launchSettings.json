@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Gemini": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

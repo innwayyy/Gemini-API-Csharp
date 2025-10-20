@@ -1,25 +1,33 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 class Program
 {
-   static async public Task<string> TextAsync(string prompt)
+    static async Task<string> TextAsync(string prompt)
     {
         var url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
-        var apiKey = "APIKEY_FROM_GOOGLE_AISTUDIO";
+        var apiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
+
+        if (string.IsNullOrWhiteSpace(apiKey))
+        {
+            Console.WriteLine("Missing API key");
+            return "Missing API key";
+        }
+
         var body = new
         {
             contents = new[]
             {
-        new
-        {
-            parts = new[]
-            {
-                new { text =prompt  },
+                new
+                {
+                    parts = new[]
+                    {
+                        new { text = prompt },
+                    }
+                }
             }
-        }
-    }
         };
+
         using var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Add("x-goog-api-key", apiKey);
 
@@ -37,6 +45,7 @@ class Program
         Console.WriteLine(text);
         return text ?? "idk bro";
     }
+
     private static async Task Main(string[] args)
     {
         string prompt = Console.ReadLine()!;
